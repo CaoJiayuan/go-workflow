@@ -40,6 +40,8 @@ type Configuration struct {
 // Config 数据库配置
 var Config = &Configuration{}
 
+const EnvPrefix = "WF_"
+
 func init() {
 	LoadConfig()
 }
@@ -63,8 +65,9 @@ func (c *Configuration) setFromEnv() error {
 		return err
 	}
 	for fieldname := range fieldStream {
-		if len(os.Getenv(fieldname)) > 0 {
-			err = util.StructSetValByReflect(c, fieldname, os.Getenv(fieldname))
+		envKey := EnvPrefix + fieldname
+		if len(os.Getenv(envKey)) > 0 {
+			err = util.StructSetValByReflect(c, fieldname, os.Getenv(envKey))
 			if err != nil {
 				return err
 			}
