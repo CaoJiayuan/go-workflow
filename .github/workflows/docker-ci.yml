@@ -9,8 +9,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+    - uses: azure/docker-login@v1
+      with:
+        username: ${{ secrets.DOCKER_USER }}
+        password: ${{ secrets.DOCKER_PWD }}
     - name: Build
       run: |
         IAMGE_TAG=${GITHUB_REF##*/}
         echo $IAMGE_TAG
-        #docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+        docker build . --file Dockerfile --tag cjy632258/workflow:$IAMGE_TAG --tag cjy632258/workflow:latest
+        docker push cjy632258/workflow:$IAMGE_TAG
+        docker push cjy632258/workflow:latest
