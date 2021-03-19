@@ -8,6 +8,7 @@ WORKDIR /build
 # We want to populate the module cache based on the go.{mod,sum} files.
 COPY go.mod .
 COPY go.sum .
+COPY config.json .
 
 RUN go mod download
 
@@ -26,6 +27,7 @@ RUN apk add ca-certificates
 WORKDIR /app
 
 COPY --from=build_base /build/workflow /app/workflow
+COPY --from=build_base /build/config.json /app/workflow
 
 # This container exposes port 8080 to the outside world
 EXPOSE 8080
