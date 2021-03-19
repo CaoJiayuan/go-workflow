@@ -1,4 +1,4 @@
-FROM golang:1.12-alpine AS build_base
+FROM golang:1.16-alpine AS build_base
 
 RUN apk add --no-cache git
 
@@ -24,7 +24,7 @@ WORKDIR /app
 
 COPY --from=build_base /build/workflow /app/workflow
 COPY --from=build_base /build/config.json /app/config.json
-RUN chmox +x /app/workflow
+RUN chmod +x /app/workflow
 
 # This container exposes port 8080 to the outside world
 EXPOSE 8080
