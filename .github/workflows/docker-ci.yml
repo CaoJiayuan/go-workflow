@@ -10,7 +10,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Build
-      run: /
-        export IAMGE_TAG=${GITHUB_REF##*/}
+      run: |
+        IAMGE_TAG=${GITHUB_REF##*/}
         echo $IAMGE_TAG
         #docker build . --file Dockerfile --tag my-image-name:$(date +%s)
