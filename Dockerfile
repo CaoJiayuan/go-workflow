@@ -17,11 +17,13 @@ COPY . .
 RUN CGO_ENABLED=0 go test -v
 
 # Build the Go app
-RUN go build -o ./build/workflow .
+RUN go build -o ./workflow .
 
 # Start fresh from a smaller image
 FROM alpine:3.9 
 RUN apk add ca-certificates
+
+WORKDIR /app
 
 COPY --from=build_base /build/workflow /app/workflow
 
