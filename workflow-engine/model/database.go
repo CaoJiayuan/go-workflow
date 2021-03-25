@@ -2,10 +2,12 @@ package model
 
 import (
 	"fmt"
+	"github.com/sirupsen/logrus"
 	"log"
 	"strconv"
 
-	config "github.com/go-workflow/go-workflow/workflow-config"
+	config "github.com/CaoJiayuan/go-workflow/workflow-config"
+	"github.com/CaoJiayuan/go-workflow/workflow-engine/logger"
 
 	"github.com/jinzhu/gorm"
 
@@ -33,8 +35,10 @@ func Setup() {
 	}
 	// 启用Logger，显示详细日志
 	mode, _ := strconv.ParseBool(conf.DbLogMode)
-
+	logger := logger.GetLogger("db")
+	logger.SetFormatter(&logrus.JSONFormatter{})
 	db.LogMode(mode)
+	db.SetLogger(logger)
 
 	db.SingularTable(true) //全局设置表名不可以为复数形式
 	// db.Callback().Create().Replace("gorm:update_time_stamp", updateTimeStampForCreateCallback)

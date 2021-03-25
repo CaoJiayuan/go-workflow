@@ -8,7 +8,7 @@ type Procdef struct {
 	Name    string `json:"name,omitempty"`
 	Version int    `json:"version,omitempty"`
 	// 流程定义json字符串
-	Resource string `gorm:"size:10000" json:"resource,omitempty"`
+	Resource string `gorm:"type:longtext" json:"resource,omitempty"`
 	// 用户id
 	Userid   string `json:"userid,omitempty"`
 	Username string `json:"username,omitempty"`

@@ -7,12 +7,12 @@ import (
 	"strconv"
 	"time"
 
-	router "github.com/go-workflow/go-workflow/workflow-router"
+	router "github.com/CaoJiayuan/go-workflow/workflow-router"
 
-	config "github.com/go-workflow/go-workflow/workflow-config"
+	config "github.com/CaoJiayuan/go-workflow/workflow-config"
 
-	model "github.com/go-workflow/go-workflow/workflow-engine/model"
-	"github.com/go-workflow/go-workflow/workflow-engine/service"
+	model "github.com/CaoJiayuan/go-workflow/workflow-engine/model"
+	"github.com/CaoJiayuan/go-workflow/workflow-engine/service"
 )
 
 // 配置

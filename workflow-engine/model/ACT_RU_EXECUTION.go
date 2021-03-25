@@ -18,7 +18,7 @@ type Execution struct {
 	ProcDefID   int    `json:"procDefID"`
 	ProcDefName string `json:"procDefName"`
 	// NodeInfos 执行流经过的所有节点
-	NodeInfos string `gorm:"size:4000" json:"nodeInfos"`
+	NodeInfos string `gorm:"type:longtext" json:"nodeInfos"`
 	IsActive  int8   `json:"isActive"`
 	StartTime string `json:"startTime"`
 }
