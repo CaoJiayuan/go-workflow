@@ -14,6 +14,8 @@ var clusterIsOpen = false
 // RedisOpen 是否连接 redis
 var RedisOpen = false
 
+const KeyPrefix = "go-wf:"
+
 // SetRedis 设置redis
 func SetRedis() {
 	fmt.Println("-------启动redis--------")
@@ -45,6 +47,7 @@ func SetRedis() {
 
 // RedisSetVal 将值保存到redis
 func RedisSetVal(key, value string, expiration time.Duration) error {
+	key = KeyPrefix + key
 
 	if clusterIsOpen {
 		return redisClusterClient.Set(key, value, expiration).Err()
@@ -54,6 +57,7 @@ func RedisSetVal(key, value string, expiration time.Duration) error {
 
 // RedisGetVal 从redis获取值
 func RedisGetVal(key string) (string, error) {
+	key = KeyPrefix + key
 
 	if clusterIsOpen {
 		return redisClusterClient.Get(key).Result()

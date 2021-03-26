@@ -1,5 +1,5 @@
 {
-  "Port": "18080",
+  "Port": "8080",
   "ReadTimeout": "5",
   "WriteTimeout": "5",
   "DbLogMode": "true",

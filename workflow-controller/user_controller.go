@@ -9,7 +9,19 @@ import (
 
 func GetUser(writer http.ResponseWriter, request *http.Request) {
 	if request.Method != "POST" {
-		util.ResponseErr(writer, "只支持Post方法！！Only support Post ")
+		token := request.URL.Query().Get("token")
+		if token == "" {
+			util.ResponseErr(writer, "token 不能为空")
+			return
+		}
+		user, err := service.GetUserinfoFromRedis(token)
+
+		if err != nil {
+			util.ResponseErr(writer, err)
+			return
+		}
+		user.Token = token
+		utils.ResponseJson(writer, user)
 		return
 	}
 
@@ -20,6 +32,32 @@ func GetUser(writer http.ResponseWriter, request *http.Request) {
 		util.ResponseErr(writer, err)
 		return
 	}
+
+	if user.ID == "" {
+		util.ResponseErr(writer, "ID不能为空")
+		return
+	}
+	if user.Company == "" {
+		util.ResponseErr(writer, "Company不能为空")
+		return
+	}
+
+	if user.Department == "" {
+		util.ResponseErr(writer, "Department不能为空")
+		return
+	}
+
+	if len(user.Roles) < 1 {
+		util.ResponseErr(writer, "Roles不能为空")
+		return
+	}
+
+	if len(user.Departments) < 1 {
+		util.ResponseErr(writer, "Departments不能为空")
+		return
+	}
+
+	user.Token, _ = service.SetUserInfoToRedis(user)
 
 	utils.ResponseJson(writer, user)
 }

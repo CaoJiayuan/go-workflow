@@ -2,6 +2,7 @@ package router
 
 import (
 	"net/http"
+	"strings"
 
 	config "github.com/CaoJiayuan/go-workflow/workflow-config"
 	controller "github.com/CaoJiayuan/go-workflow/workflow-controller"
@@ -15,8 +16,18 @@ func init() {
 	setMux()
 }
 func intercept(h http.HandlerFunc) http.HandlerFunc {
-	return crossOrigin(h)
+	return withJson(crossOrigin(h))
 }
+
+func withJson(h http.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		if strings.Contains(r.Header.Get("Accept"), "json") {
+			w.Header().Set("Content-Type", "application/json")
+		}
+		h(w, r)
+	}
+}
+
 func crossOrigin(h http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Access-Control-Allow-Origin", conf.AccessControlAllowOrigin)
