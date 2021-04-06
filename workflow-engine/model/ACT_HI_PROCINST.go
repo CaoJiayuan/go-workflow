@@ -140,7 +140,7 @@ func findProcInsts(maps map[string]interface{}, pageIndex, pageSize int) ([]*Pro
 func FindProcInsts(userID, procName, company string, groups, departments []string, pageIndex, pageSize int) ([]*ProcInst, int64, error) {
 	var datas []*ProcInst
 	var count int64
-	var sql = " company='" + company + "' and is_finished= true"
+	var sql = " company='" + company + "' and is_finished= false"
 	if len(procName) > 0 {
 		sql += "and proc_def_name='" + procName + "'"
 	}

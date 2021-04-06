@@ -1,6 +1,7 @@
 package model
 
 import (
+	"fmt"
 	"github.com/mumushuiding/util"
 	"gorm.io/gorm"
 	"time"
@@ -48,13 +49,14 @@ func (t *Task) NewTask() (int, error) {
 
 // UpdateTx UpdateTx
 func (t *Task) UpdateTx(tx *gorm.DB) error {
-	err := tx.Model(&Task{}).Updates(t).Error
+	err := tx.Updates(t).Error
 	return err
 }
 
 // GetTaskByID GetTaskById
 func GetTaskByID(id int) (*Task, error) {
 	var t = &Task{}
+	fmt.Println(id)
 	err := db.Where("id=?", id).Find(t).Error
 	return t, err
 }

@@ -104,8 +104,8 @@ func UpdateTaskWhenComplete(taskID int, userID string, pass bool, tx *gorm.DB) (
 	if err != nil {
 		return nil, err
 	}
-	if task == nil {
-		return nil, errors.New("任务【" + fmt.Sprintf("%d", task.ID) + "】不存在")
+	if task.ID == 0 {
+		return nil, errors.New("任务【" + fmt.Sprintf("%d", taskID) + "】不存在")
 	}
 	// 判断是否已经结束
 	if task.IsFinished == true {
