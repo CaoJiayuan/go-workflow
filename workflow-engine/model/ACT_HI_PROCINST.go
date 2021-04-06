@@ -4,7 +4,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 )
 
 // ProcInst 流程实例
@@ -25,8 +25,8 @@ type ProcInst struct {
 	Candidate string `json:"candidate"`
 	// 当前任务
 	TaskID        int    `json:"taskID"`
-	StartTime     string `json:"startTime"`
-	EndTime       string `json:"endTime"`
+	StartTime     string `json:"startTime" gorm:"type:timestamp"`
+	EndTime       string `json:"endTime" gorm:"type:timestamp"`
 	Duration      int64  `json:"duration"`
 	StartUserID   string `json:"startUserId"`
 	StartUserName string `json:"startUserName"`
@@ -58,7 +58,7 @@ func DepartmentsNotNull(departments []string, sql string) func(db *gorm.DB) *gor
 }
 
 // StartByMyself 我发起的流程
-func StartByMyself(userID, company string, pageIndex, pageSize int) ([]*ProcInst, int, error) {
+func StartByMyself(userID, company string, pageIndex, pageSize int) ([]*ProcInst, int64, error) {
 	maps := map[string]interface{}{
 		"start_user_id": userID,
 		"company":       company,
@@ -77,9 +77,9 @@ func FindProcInstByID(id int) (*ProcInst, error) {
 }
 
 // FindProcNotify 查询抄送我的流程
-func FindProcNotify(userID, company string, groups []string, pageIndex, pageSize int) ([]*ProcInst, int, error) {
+func FindProcNotify(userID, company string, groups []string, pageIndex, pageSize int) ([]*ProcInst, int64, error) {
 	var datas []*ProcInst
-	var count int
+	var count int64
 	var sql string
 	if len(groups) != 0 {
 		var s []string
@@ -100,9 +100,9 @@ func FindProcNotify(userID, company string, groups []string, pageIndex, pageSize
 	}
 	return datas, count, err
 }
-func findProcInsts(maps map[string]interface{}, pageIndex, pageSize int) ([]*ProcInst, int, error) {
+func findProcInsts(maps map[string]interface{}, pageIndex, pageSize int) ([]*ProcInst, int64, error) {
 	var datas []*ProcInst
-	var count int
+	var count int64
 	selectDatas := func(in chan<- error, wg *sync.WaitGroup) {
 		go func() {
 			err := db.Where(maps).Offset((pageIndex - 1) * pageSize).Limit(pageSize).Order("start_time desc").Find(&datas).Error
@@ -137,9 +137,9 @@ func findProcInsts(maps map[string]interface{}, pageIndex, pageSize int) ([]*Pro
 
 // FindProcInsts FindProcInsts
 // 分页查询
-func FindProcInsts(userID, procName, company string, groups, departments []string, pageIndex, pageSize int) ([]*ProcInst, int, error) {
+func FindProcInsts(userID, procName, company string, groups, departments []string, pageIndex, pageSize int) ([]*ProcInst, int64, error) {
 	var datas []*ProcInst
-	var count int
+	var count int64
 	var sql = " company='" + company + "' and is_finished=0 "
 	if len(procName) > 0 {
 		sql += "and proc_def_name='" + procName + "'"
@@ -221,6 +221,6 @@ func (p *ProcInst) UpdateTx(tx *gorm.DB) error {
 // FindFinishedProc FindFinishedProc
 func FindFinishedProc() ([]*ProcInst, error) {
 	var datas []*ProcInst
-	err := db.Where("is_finished=1").Find(&datas).Error
+	err := db.Where("is_finished=?", true).Find(&datas).Error
 	return datas, err
 }

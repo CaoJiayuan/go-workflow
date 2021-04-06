@@ -2,6 +2,8 @@ package config
 
 import (
 	"encoding/json"
+	"github.com/CaoJiayuan/go-workflow/utils"
+	"github.com/joho/godotenv"
 	"log"
 	"os"
 
@@ -50,6 +52,7 @@ func init() {
 func LoadConfig() {
 	// 获取配置信息config
 	Config.getConf()
+	godotenv.Load(utils.Workdir(".env"))
 	// 环境变量覆盖config
 	err := Config.setFromEnv()
 	if err != nil {

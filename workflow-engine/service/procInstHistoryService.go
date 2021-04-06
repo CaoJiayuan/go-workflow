@@ -2,6 +2,7 @@ package service
 
 import (
 	"errors"
+	"github.com/CaoJiayuan/go-workflow/utils"
 
 	"github.com/CaoJiayuan/go-workflow/workflow-engine/model"
 	"github.com/mumushuiding/util"
@@ -13,7 +14,7 @@ func FindProcHistory(receiver *ProcessPageReceiver) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return util.ToPageJSON(datas, count, receiver.PageIndex, receiver.PageSize)
+	return utils.PageJSONString(datas, count, receiver.PageIndex, receiver.PageSize)
 }
 
 // FindProcHistoryByToken 查询我的审批纪录
@@ -33,7 +34,7 @@ func FindProcHistoryByToken(token string, receiver *ProcessPageReceiver) (string
 	// receiver.Username = userinfo.Username
 	return FindProcHistory(receiver)
 }
-func findAllProcHistory(receiver *ProcessPageReceiver) ([]*model.ProcInstHistory, int, error) {
+func findAllProcHistory(receiver *ProcessPageReceiver) ([]*model.ProcInstHistory, int64, error) {
 	var page = util.Page{}
 	page.PageRequest(receiver.PageIndex, receiver.PageSize)
 	return model.FindProcHistory(receiver.UserID, receiver.Company, receiver.PageIndex, receiver.PageSize)
@@ -52,7 +53,7 @@ func StartHistoryByMyself(receiver *ProcessPageReceiver) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return util.ToPageJSON(datas, count, receiver.PageIndex, receiver.PageSize)
+	return utils.PageJSONString(datas, count, receiver.PageIndex, receiver.PageSize)
 }
 
 // FindProcHistoryNotify 查询抄送我的流程
@@ -63,5 +64,5 @@ func FindProcHistoryNotify(receiver *ProcessPageReceiver) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return util.ToPageJSON(datas, count, receiver.PageIndex, receiver.PageSize)
+	return utils.PageJSONString(datas, count, receiver.PageIndex, receiver.PageSize)
 }

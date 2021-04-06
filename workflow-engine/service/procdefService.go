@@ -2,6 +2,7 @@ package service
 
 import (
 	"errors"
+	"github.com/CaoJiayuan/go-workflow/utils"
 	"sync"
 	"time"
 
@@ -160,11 +161,11 @@ func (p *Procdef) FindAllPageAsJSON() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return util.ToPageJSON(datas, count, p.PageIndex, p.PageSize)
+	return utils.PageJSONString(datas, count, p.PageIndex, p.PageSize)
 }
 
 // FindAll FindAll
-func (p *Procdef) FindAll() ([]*model.Procdef, int, error) {
+func (p *Procdef) FindAll() ([]*model.Procdef, int64, error) {
 	var page = util.Page{}
 	page.PageRequest(p.PageIndex, p.PageSize)
 	maps := p.getMaps()

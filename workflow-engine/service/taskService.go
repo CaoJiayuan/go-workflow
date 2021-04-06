@@ -10,7 +10,7 @@ import (
 
 	"github.com/CaoJiayuan/go-workflow/workflow-engine/flow"
 
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 
 	"github.com/CaoJiayuan/go-workflow/workflow-engine/model"
 	"github.com/mumushuiding/util"

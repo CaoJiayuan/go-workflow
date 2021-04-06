@@ -1,7 +1,7 @@
 package model
 
 import (
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 )
 
 // ExecutionHistory ExecutionHistory
@@ -12,5 +12,5 @@ type ExecutionHistory struct {
 
 // CopyExecutionToHistoryByProcInstIDTx CopyExecutionToHistoryByProcInstIDTx
 func CopyExecutionToHistoryByProcInstIDTx(procInstID int, tx *gorm.DB) error {
-	return tx.Exec("insert into execution_history select * from execution where proc_inst_id=?", procInstID).Error
+	return tx.Exec("insert into execution_histories select * from executions where proc_inst_id=?", procInstID).Error
 }

@@ -1,10 +1,10 @@
 package model
 
 import (
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 )
 
-// import _ "github.com/jinzhu/gorm"
+// import _ "gorm.io/gorm"
 
 // Task 流程任务表
 // ExecutionID 执行流ID
@@ -18,13 +18,13 @@ type Task struct {
 	// Company string `json:"company"`
 	// ExecutionID     string `json:"executionID"`
 	// 当前执行流所在的节点
-	NodeID string `json:"nodeId"`
+	NodeID string `json:"nodeId" gorm:"index"`
 	Step   int    `json:"step"`
 	// 流程实例id
-	ProcInstID int    `json:"procInstID"`
+	ProcInstID int    `json:"procInstID" gorm:"index"`
 	Assignee   string `json:"assignee"`
-	CreateTime string `json:"createTime"`
-	ClaimTime  string `json:"claimTime"`
+	CreateTime string `json:"createTime" gorm:"type:timestamp"`
+	ClaimTime  string `json:"claimTime" gorm:"type:timestamp"`
 	// 还未审批的用户数，等于0代表会签已经全部审批结束，默认值为1
 	MemberCount   int8 `json:"memberCount" gorm:"default:1"`
 	UnCompleteNum int8 `json:"unCompleteNum" gorm:"default:1"`

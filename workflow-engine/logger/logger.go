@@ -2,11 +2,10 @@ package logger
 
 import (
 	"fmt"
+	"github.com/CaoJiayuan/go-workflow/utils"
 	rotatelogs "github.com/lestrrat-go/file-rotatelogs"
 	"github.com/sirupsen/logrus"
 	"github.com/sirupsen/logrus/hooks/writer"
-	"os"
-	"path/filepath"
 	"time"
 )
 
@@ -46,13 +45,8 @@ func GetLogger(name ...string) *logrus.Logger {
 	return l
 }
 
-func root() string {
-	binaryRootPath, _ := filepath.Abs(os.Args[0])
-	return filepath.Dir(binaryRootPath)
-}
-
 func getWriter(name string) (*rotatelogs.RotateLogs, error) {
-	path := fmt.Sprintf("%s/%s-", root()+"/logs", name) + "%Y%m%d.log"
+	path := fmt.Sprintf("%s/%s-", utils.Workdir("logs"), name) + "%Y%m%d.log"
 
 	return rotatelogs.New(path, maxAge, rotationTime)
 }

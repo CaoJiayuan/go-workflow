@@ -2,10 +2,11 @@ package service
 
 import (
 	"errors"
+	"github.com/CaoJiayuan/go-workflow/utils"
 	"sync"
 	"time"
 
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 
 	"github.com/CaoJiayuan/go-workflow/workflow-engine/flow"
 	"github.com/CaoJiayuan/go-workflow/workflow-engine/model"
@@ -47,7 +48,7 @@ func GetDefaultProcessPageReceiver() *ProcessPageReceiver {
 	p.PageSize = 10
 	return &p
 }
-func findAll(pr *ProcessPageReceiver) ([]*model.ProcInst, int, error) {
+func findAll(pr *ProcessPageReceiver) ([]*model.ProcInst, int64, error) {
 	var page = util.Page{}
 	page.PageRequest(pr.PageIndex, pr.PageSize)
 	return model.FindProcInsts(pr.UserID, pr.ProcName, pr.Company, pr.Groups, pr.Departments, pr.PageIndex, pr.PageSize)
@@ -68,7 +69,7 @@ func FindAllPageAsJSON(pr *ProcessPageReceiver) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return util.ToPageJSON(datas, count, pr.PageIndex, pr.PageSize)
+	return utils.PageJSONString(datas, count, pr.PageIndex, pr.PageSize)
 }
 
 // FindMyProcInstByToken FindMyProcInstByToken
@@ -238,7 +239,7 @@ func StartByMyself(receiver *ProcessPageReceiver) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return util.ToPageJSON(datas, count, receiver.PageIndex, receiver.PageSize)
+	return utils.PageJSONString(datas, count, receiver.PageIndex, receiver.PageSize)
 }
 
 // FindProcNotify 查询抄送我的
@@ -249,7 +250,7 @@ func FindProcNotify(receiver *ProcessPageReceiver) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return util.ToPageJSON(datas, count, receiver.PageIndex, receiver.PageSize)
+	return utils.PageJSONString(datas, count, receiver.PageIndex, receiver.PageSize)
 }
 
 // UpdateProcInst UpdateProcInst

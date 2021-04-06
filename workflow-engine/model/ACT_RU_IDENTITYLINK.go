@@ -1,7 +1,7 @@
 package model
 
 import (
-	"github.com/jinzhu/gorm"
+	"gorm.io/gorm"
 )
 
 // Identitylink 用户组同任务的关系
@@ -9,11 +9,11 @@ type Identitylink struct {
 	Model
 	Group      string `json:"group,omitempty"`
 	Type       string `json:"type,omitempty"`
-	UserID     string `json:"userid,omitempty"`
+	UserID     string `json:"userid,omitempty" gorm:"index"`
 	UserName   string `json:"username,omitempty"`
-	TaskID     int    `json:"taskID,omitempty"`
+	TaskID     int    `json:"taskID,omitempty" gorm:"index"`
 	Step       int    `json:"step"`
-	ProcInstID int    `json:"procInstID,omitempty"`
+	ProcInstID int    `json:"procInstID,omitempty" gorm:"index"`
 	Company    string `json:"company,omitempty"`
 	Comment    string `json:"comment,omitempty"`
 }
@@ -52,7 +52,7 @@ func DelCandidateByProcInstID(procInstID int, tx *gorm.DB) error {
 
 // ExistsNotifierByProcInstIDAndGroup 抄送人是否已经存在
 func ExistsNotifierByProcInstIDAndGroup(procInstID int, group string) (bool, error) {
-	var count int
+	var count int64
 	err := db.Model(&Identitylink{}).Where("identitylink.proc_inst_id=? and identitylink.group=? and identitylink.type=?", procInstID, group, IdentityTypes[NOTIFIER]).Count(&count).Error
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
@@ -69,7 +69,7 @@ func ExistsNotifierByProcInstIDAndGroup(procInstID int, group string) (bool, err
 // IfParticipantByTaskID IfParticipantByTaskID
 // 针对指定任务判断用户是否已经审批过了
 func IfParticipantByTaskID(userID, company string, taskID int) (bool, error) {
-	var count int
+	var count int64
 	err := db.Model(&Identitylink{}).Where("user_id=? and company=? and task_id=?", userID, company, taskID).Count(&count).Error
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {

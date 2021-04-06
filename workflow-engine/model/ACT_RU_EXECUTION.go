@@ -3,8 +3,8 @@ package model
 import (
 	"time"
 
-	"github.com/jinzhu/gorm"
 	"github.com/mumushuiding/util"
+	"gorm.io/gorm"
 )
 
 // Execution 流程实例（执行流）表
@@ -18,9 +18,9 @@ type Execution struct {
 	ProcDefID   int    `json:"procDefID"`
 	ProcDefName string `json:"procDefName"`
 	// NodeInfos 执行流经过的所有节点
-	NodeInfos string `gorm:"type:longtext" json:"nodeInfos"`
+	NodeInfos string `gorm:"type:json" json:"nodeInfos"`
 	IsActive  int8   `json:"isActive"`
-	StartTime string `json:"startTime"`
+	StartTime string `json:"startTime" gorm:"type:timestamp"`
 }
 
 // Save save
