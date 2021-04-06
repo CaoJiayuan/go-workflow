@@ -140,7 +140,7 @@ func findProcInsts(maps map[string]interface{}, pageIndex, pageSize int) ([]*Pro
 func FindProcInsts(userID, procName, company string, groups, departments []string, pageIndex, pageSize int) ([]*ProcInst, int64, error) {
 	var datas []*ProcInst
 	var count int64
-	var sql = " company='" + company + "' and is_finished=0 "
+	var sql = " company='" + company + "' and is_finished= true"
 	if len(procName) > 0 {
 		sql += "and proc_def_name='" + procName + "'"
 	}
@@ -215,7 +215,7 @@ func DelProcInstByIDTx(id int, tx *gorm.DB) error {
 
 // UpdateTx UpdateTx
 func (p *ProcInst) UpdateTx(tx *gorm.DB) error {
-	return tx.Model(&ProcInst{}).Updates(p).Error
+	return tx.Updates(p).Error
 }
 
 // FindFinishedProc FindFinishedProc

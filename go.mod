@@ -3,11 +3,16 @@ module github.com/CaoJiayuan/go-workflow
 go 1.16
 
 require (
+	github.com/enorith/container v0.0.2 // indirect
+	github.com/enorith/feather v0.0.1
+	github.com/enorith/supports v0.0.6 // indirect
 	github.com/go-redis/redis v6.15.9+incompatible
 	github.com/joho/godotenv v1.3.0
 	github.com/jonboulle/clockwork v0.2.2 // indirect
 	github.com/lestrrat-go/file-rotatelogs v2.4.0+incompatible
 	github.com/lestrrat-go/strftime v1.0.4 // indirect
+	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
+	github.com/modern-go/reflect2 v1.0.1 // indirect
 	github.com/mumushuiding/util v0.0.0-20210203080010-04699a081184
 	github.com/onsi/ginkgo v1.15.2 // indirect
 	github.com/onsi/gomega v1.11.0 // indirect

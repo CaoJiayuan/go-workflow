@@ -140,13 +140,17 @@ func (p *ProcessReceiver) StartProcessInstanceByID(variable *map[string]string) 
 		ProcDefName:   procdefName,
 		Title:         p.Title,
 		Department:    p.Department,
-		StartTime:     util.FormatDate(time.Now(), util.YYYY_MM_DD_HH_MM_SS),
+		StartTime:     util.FormatDate(time.Now(), model.TimestampFormat),
+		EndTime:       util.FormatDate(time.Now().AddDate(50, 0, 0), model.TimestampFormat),
 		StartUserID:   p.UserID,
 		StartUserName: p.Username,
 		Company:       p.Company,
 	} //开启事务
 	// times = time.Now()
 	procInstID, err := CreateProcInstTx(&procInst, tx) // 事务
+	if err != nil {
+		return 0, err
+	}
 	// fmt.Printf("启动流程实例耗时：%v", time.Since(times))
 	exec := &model.Execution{
 		ProcDefID:  prodefID,
@@ -157,12 +161,13 @@ func (p *ProcessReceiver) StartProcessInstanceByID(variable *map[string]string) 
 		ProcInstID:    procInstID,
 		Assignee:      p.UserID,
 		IsFinished:    true,
-		ClaimTime:     util.FormatDate(time.Now(), util.YYYY_MM_DD_HH_MM_SS),
+		ClaimTime:     util.FormatDate(time.Now(), model.TimestampFormat),
 		Step:          step,
 		MemberCount:   1,
 		UnCompleteNum: 0,
 		ActType:       "or",
 		AgreeNum:      1,
+		CreateTime:    util.FormatDate(time.Now(), model.TimestampFormat),
 	}
 	// 生成执行流，一串运行节点
 	_, err = GenerateExec(exec, node, p.UserID, variable, tx) //事务
@@ -275,7 +280,7 @@ func MoveFinishedProcInstToHistory() error {
 	}
 	for _, v := range proinsts {
 		// 复制 proc_inst
-		duration, err := util.TimeStrSub(v.EndTime, v.StartTime, util.YYYY_MM_DD_HH_MM_SS)
+		duration, err := util.TimeStrSub(v.EndTime, v.StartTime, model.TimestampFormat)
 		if err != nil {
 			return err
 		}

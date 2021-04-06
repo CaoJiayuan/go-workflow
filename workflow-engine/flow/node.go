@@ -74,7 +74,7 @@ var NodeInfoTypes = [...]string{STARTER: "starter"}
 type ActionerRule struct {
 	Type       string `json:"type,omitempty"`
 	LabelNames string `json:"labelNames,omitempty"`
-	Labels     int    `json:"labels,omitempty"`
+	Labels     string `json:"labels,omitempty"`
 	IsEmpty    bool   `json:"isEmpty,omitempty"`
 	// 表示需要通过的人数 如果是会签
 	MemberCount int8 `json:"memberCount,omitempty"`

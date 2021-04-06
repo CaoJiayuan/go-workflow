@@ -140,11 +140,7 @@ func FindMyProcInstByToken(writer http.ResponseWriter, request *http.Request) {
 	}
 	// fmt.Printf("token:%s\n", token)
 	var receiver = service.GetDefaultProcessPageReceiver()
-	err := util.Body2Struct(request, &receiver)
-	if err != nil {
-		util.ResponseErr(writer, err)
-		return
-	}
+	util.Body2Struct(request, &receiver)
 	result, err := service.FindMyProcInstByToken(token, receiver)
 	if err != nil {
 		util.ResponseErr(writer, err)

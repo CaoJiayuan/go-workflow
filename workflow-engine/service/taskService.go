@@ -35,7 +35,7 @@ func NewTask(t *model.Task) (int, error) {
 	if len(t.NodeID) == 0 {
 		return 0, errors.New("request param nodeID can not be null / 任务当前所在节点nodeId不能为空！")
 	}
-	t.CreateTime = util.FormatDate(time.Now(), util.YYYY_MM_DD_HH_MM_SS)
+	t.CreateTime = util.FormatDate(time.Now(), model.TimestampFormat)
 	return t.NewTask()
 }
 
@@ -45,7 +45,7 @@ func NewTaskTx(t *model.Task, tx *gorm.DB) (int, error) {
 	if len(t.NodeID) == 0 {
 		return 0, errors.New("request param nodeID can not be null / 任务当前所在节点nodeId不能为空！")
 	}
-	t.CreateTime = util.FormatDate(time.Now(), util.YYYY_MM_DD_HH_MM_SS)
+	t.CreateTime = util.FormatDate(time.Now(), model.TimestampFormat)
 	return t.NewTaskTx(tx)
 }
 
@@ -116,7 +116,7 @@ func UpdateTaskWhenComplete(taskID int, userID string, pass bool, tx *gorm.DB) (
 	}
 	// 设置处理人和处理时间
 	task.Assignee = userID
-	task.ClaimTime = util.FormatDate(time.Now(), util.YYYY_MM_DD_HH_MM_SS)
+	task.ClaimTime = util.FormatDate(time.Now(), model.TimestampFormat)
 	// ----------------会签 （默认全部通过才结束），只要存在一个不通过，就结束，然后流转到上一步
 	//同意
 	if pass {
@@ -341,7 +341,7 @@ func MoveStage(nodeInfos []*flow.NodeInfo, userID, username, company, comment, c
 // MoveToNextStage MoveToNextStage
 //通过
 func MoveToNextStage(nodeInfos []*flow.NodeInfo, userID, company string, currentTaskID, procInstID, step int, tx *gorm.DB) error {
-	var currentTime = util.FormatDate(time.Now(), util.YYYY_MM_DD_HH_MM_SS)
+	var currentTime = util.FormatDate(time.Now(), model.TimestampFormat)
 	var task = getNewTask(nodeInfos, step, procInstID, currentTime) //新任务
 	var procInst = &model.ProcInst{                                 // 流程实例要更新的字段
 		NodeID:    nodeInfos[step].NodeID,
@@ -395,7 +395,7 @@ func MoveToNextStage(nodeInfos []*flow.NodeInfo, userID, company string, current
 // 驳回
 func MoveToPrevStage(nodeInfos []*flow.NodeInfo, userID, company string, currentTaskID, procInstID, step int, tx *gorm.DB) error {
 	// 生成新的任务
-	var task = getNewTask(nodeInfos, step, procInstID, util.FormatDate(time.Now(), util.YYYY_MM_DD_HH_MM_SS)) //新任务
+	var task = getNewTask(nodeInfos, step, procInstID, util.FormatDate(time.Now(), model.TimestampFormat)) //新任务
 	taksID, err := task.NewTaskTx(tx)
 	if err != nil {
 		return err

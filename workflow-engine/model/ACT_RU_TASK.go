@@ -1,7 +1,9 @@
 package model
 
 import (
+	"github.com/mumushuiding/util"
 	"gorm.io/gorm"
+	"time"
 )
 
 // import _ "gorm.io/gorm"
@@ -70,6 +72,14 @@ func GetTaskLastByProInstID(procInstID int) (*Task, error) {
 func (t *Task) NewTaskTx(tx *gorm.DB) (int, error) {
 	// str, _ := util.ToJSONStr(t)
 	// fmt.Printf("newTask:%s", str)
+	if t.CreateTime == "" {
+		t.CreateTime = util.FormatDate(time.Now(), TimestampFormat)
+	}
+
+	if t.ClaimTime == "" {
+		t.ClaimTime = util.FormatDate(time.Now(), TimestampFormat)
+	}
+
 	err := tx.Create(t).Error
 	if err != nil {
 		return 0, err

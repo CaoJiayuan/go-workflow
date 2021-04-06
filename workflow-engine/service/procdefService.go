@@ -120,7 +120,7 @@ func SaveProcdef(p *model.Procdef) (id int, err error) {
 	if err != nil {
 		return 0, err
 	}
-	p.DeployTime = util.FormatDate(time.Now(), util.YYYY_MM_DD_HH_MM_SS)
+	p.DeployTime = util.FormatDate(time.Now(), model.TimestampFormat)
 	if old == nil {
 		p.Version = 1
 		return p.Save()

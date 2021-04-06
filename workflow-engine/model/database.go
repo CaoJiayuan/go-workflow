@@ -20,6 +20,8 @@ type Model struct {
 	ID int `gorm:"primary_key" json:"id,omitempty"`
 }
 
+var TimestampFormat = "2006-01-02 15:04:05"
+
 // 配置
 var conf = *config.Config
 
@@ -50,6 +52,7 @@ func getDb() (*gorm.DB, error) {
 
 	dialector = mysql.Open(fmt.Sprintf("%s:%s@(%s:%s)/%s?charset=utf8&parseTime=True&loc=Local", conf.DbUser, conf.DbPassword, conf.DbHost, conf.DbPort, conf.DbName))
 	if conf.DbType == "postgres" {
+		TimestampFormat = "2006-01-02 15:04:05.000000"
 
 		dialector = postgres.Open(fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable", conf.DbUser, conf.DbPassword, conf.DbHost, conf.DbPort, conf.DbName))
 	}

@@ -2,6 +2,7 @@ package controller
 
 import (
 	"fmt"
+	"github.com/CaoJiayuan/go-workflow/utils"
 	"net/http"
 	"strconv"
 
@@ -84,17 +85,13 @@ func SaveProcdef(writer http.ResponseWriter, request *http.Request) {
 // 分页查询
 func FindAllProcdefPage(writer http.ResponseWriter, request *http.Request) {
 	var procdef = service.Procdef{PageIndex: 1, PageSize: 10}
-	err := util.Body2Struct(request, &procdef)
-	if err != nil {
-		util.ResponseErr(writer, err)
-		return
-	}
+	util.Body2Struct(request, &procdef)
 	datas, err := procdef.FindAllPageAsJSON()
 	if err != nil {
 		util.ResponseErr(writer, err)
 		return
 	}
-	fmt.Fprintf(writer, "%s", datas)
+	utils.ResponseJson(writer, datas)
 }
 
 // DelProcdefByID del by id

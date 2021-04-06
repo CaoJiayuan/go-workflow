@@ -33,6 +33,7 @@ type Configuration struct {
 	TLSOpen       string
 	TLSCrt        string
 	TLSKey        string
+	NotifyUrl     string
 	// 跨域设置
 	AccessControlAllowOrigin  string
 	AccessControlAllowHeaders string

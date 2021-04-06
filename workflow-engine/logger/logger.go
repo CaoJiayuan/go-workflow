@@ -25,6 +25,9 @@ func GetLogger(name ...string) *logrus.Logger {
 		l.WithField("name", name[0])
 		n = name[0]
 	}
+	l.SetFormatter(&logrus.JSONFormatter{
+		DisableHTMLEscape: true,
+	})
 	if w, e := getWriter(n); e == nil {
 		l.AddHook(&writer.Hook{
 			Writer: w,

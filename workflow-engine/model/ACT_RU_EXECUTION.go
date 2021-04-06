@@ -35,7 +35,7 @@ func (p *Execution) Save() (ID int, err error) {
 // SaveTx SaveTx
 // 接收外部事务
 func (p *Execution) SaveTx(tx *gorm.DB) (ID int, err error) {
-	p.StartTime = util.FormatDate(time.Now(), util.YYYY_MM_DD_HH_MM_SS)
+	p.StartTime = util.FormatDate(time.Now(), TimestampFormat)
 	if err := tx.Create(p).Error; err != nil {
 		return 0, err
 	}
@@ -51,7 +51,7 @@ func GetExecByProcInst(procInstID int) (*Execution, error) {
 	if err == gorm.ErrRecordNotFound {
 		return nil, nil
 	}
-	if err != nil || p == nil {
+	if err != nil || p.ID == 0 {
 		return nil, err
 	}
 	return p, nil
